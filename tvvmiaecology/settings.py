@@ -1,6 +1,7 @@
 import json
 from json import JSONDecoder
 
+# Note:  this is the default location of application secrets when containered
 CONFIG_FILE = "/tvv/secrets/tvvmiaenterprise.config.json"
 class TVVConfigApi(JSONDecoder):
     JSON = None
