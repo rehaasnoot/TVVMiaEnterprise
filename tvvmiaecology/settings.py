@@ -1,26 +1,18 @@
-#!/usr/bin/env python
-from configparser import SafeConfigParser
+import json
+from json import JSONDecoder
 
-class TVVConfigApi(SafeConfigParser):
+CONFIG_FILE = "/tvv/secrets/tvvmiaenterprise.config.json"
+class TVVConfigApi(JSONDecoder):
+    JSON = None
     def __init__(self):
-        SafeConfigParser.__init__(self)
-        initFile = open('/Users/rhaasnoot/Documents/workspace/tvvmiaenterprise/config.ini', 'r')
-        self.read_file(initFile, None)
-#        self.read(['config.ini', '../config.ini', '../../config.ini', '../../../config.ini'])
-        sections = self.sections()
-        #print("(sections>=<{}>".format(sections) )
+        JSONDecoder.__init__(self)
+        configFile = open(CONFIG_FILE, 'r')
+        self.JSON = json.load(configFile)
+    def get(self, section, name):
+        section_dict = self.JSON.get(section)
+        value = section_dict.get(name)
+        return value
 
 class TVVConfigApp(TVVConfigApi):
     def __init__(self):
         TVVConfigApi.__init__()
-
-# Read config.ini and store into variables
-
-#HOST = api_config.get('app', 'HOST')
-#PORT = int(api_config.get('app', 'PORT'))
-#DEBUG = api_config.get('app', 'DEBUG')
-#DBTYPE = api_config.get('database', 'DBTYPE')
-#DBHOST = api_config.get('database', 'DBHOST')
-#DBNAME = api_config.get('database', 'DBNAME')
-#DBUSER = api_config.get('database', 'DBUSER')
-#DBPASS = api_config.get('database', 'DBPASS')

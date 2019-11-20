@@ -1,4 +1,5 @@
 from flask import Flask, jsonify
+from ...settings import TVVConfigApi
 
 #from tvvmiaapi import GraphQLView
 #from graphql import graphql
@@ -15,7 +16,7 @@ API_ROUTE_ASSEMBLY_CANCEL = API_ROUTE_ASSEMBLY_ROOT + '/cancel/<id>'
 API_ROUTE_ASSEMBLY_STATUS = API_ROUTE_ASSEMBLY_ROOT + '/status/<id>'
 
 api = Flask(__name__)
-config = ConfigApi()
+config = TVVConfigApi()
 api.debug(config.get(API_FORMAL_NAME, 'DEBUG'))
 
 @api.route(API_ROUTE_ROOT)
