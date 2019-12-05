@@ -2,7 +2,7 @@ import json
 from json import JSONDecoder
 
 # Note:  this is the default location of application secrets when containered
-CONFIG_FILE = "/tvv/secrets/tvvmiaenterprise.config.json"
+CONFIG_FILE = "/tvv/secrets/tvvmiaenterprise.settings.json"
 class TVVConfigApi(JSONDecoder):
     JSON = None
     def __init__(self):
@@ -11,9 +11,15 @@ class TVVConfigApi(JSONDecoder):
         self.JSON = json.load(configFile)
     def get(self, section, name):
         section_dict = self.JSON.get(section)
-        value = section_dict.get(name)
-        return value
+        if None != section_dict:
+            value = section_dict.get(name)
+            return value
+        return None
 
 class TVVConfigApp(TVVConfigApi):
     def __init__(self):
-        TVVConfigApi.__init__()
+        TVVConfigApi.__init__(self)
+        
+class TVVConfigAgent(TVVConfigApi):
+    def __init__(self):
+        TVVConfigApi.__init__(self)
