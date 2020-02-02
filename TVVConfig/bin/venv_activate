@@ -1,0 +1,33 @@
+#!/bin/bash
+
+function activate_python_virutal_environment() {
+VENV="venv/bin/activate"
+if [ -f "${VENV}" ]; then
+	source "${VENV}"
+	echo ${VENV}
+	return 0
+fi
+VENV="../${VENV}"
+if [ -f "${VENV}" ]; then
+	echo "${VENV}"
+	return 0
+fi
+VENV="${HOME}/Development/tvvmia/venv/bin/activate"
+if [ -f "${VENV}" ]; then
+	echo "${VENV}"
+	return 0
+fi
+VENV="${HOME}/Development/tvvmia/venv/bin/activate"
+if [ -f "${VENV}" ]; then
+	echo "${VENV}"
+	return 0
+fi
+return -1
+}
+venv=`activate_python_virutal_environment`
+rc=$?
+if [ ${rc} -ne 0 ]; then
+	echo "Cannot locate virtual environment. Ignoring..."
+else
+	echo "${venv}"
+fi
