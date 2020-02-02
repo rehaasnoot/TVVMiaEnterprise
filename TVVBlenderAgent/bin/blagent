@@ -1,0 +1,67 @@
+#!/bin/bash
+
+source /home/tvvdev/Development/tvvmia/venv/bin/activate
+
+secret() { # expects: $1 $2 -where $1 == section name, $2 == key name
+SECRET_FILE='/tvv/secrets/tvvblender.settings.json'
+SECRET_JSON=`jq .${1} $SECRET_FILE`
+JSON_VALUE=`echo $SECRET_JSON | jq .${2}`
+echo $JSON_VALUE | tr -d \"
+}
+
+### Define Parameters ###
+SECTION_NAME="TVV_Blagent"
+REGISTRY_SECTION_NAME="TVV_Blagent_Registry"
+HOST=`secret $SECTION_NAME HOST`
+PORT=`secret $SECTION_NAME PORT`
+USERNAME=`secret $SECTION_NAME USERNAME`
+PASSWORD=`secret $SECTION_NAME PASSWORD`
+REGISTRY_HOST=`secret $REGISTRY_SECTION_NAME HOST`
+REGISTRY_PORT=`secret $REGISTRY_SECTION_NAME PORT`
+REGISTRY_USERNAME=`secret $REGISTRY_SECTION_NAME USERNAME`
+REGISTRY_PASSWORD=`secret $REGISTRY_SECTION_NAME PASSWORD`
+
+echo "BLAGENT:<HOST,PORT>=<$BLAGENT_HOST,$BLAGENT_PORT>"
+#exit
+
+### Process Args ###
+while [ "" != "$*" ];
+do
+#       case word in [ [(] pattern [ | pattern ] ... ) list ;; ] ... esac
+	case $1 in
+		-h | -help | --help )
+			echo "Usage: $PROGNAME <-host hostname> <-port #####> <-username username> <-password password>"
+			echo "		<-registry_host host> <-registry_port port> <-registry_username username> <-registry_password password>"
+			exit ;;
+		-host | -HOST ) shift; if [ "" != "$1" ]; then HOST="$1"; fi ;;
+		-port | -PORT ) shift; if [ "" != "$1" ]; then PORT="$1"; fi ;;
+		-username | -user | -USERNAME | -USER ) shift; if [ "" != "$1" ]; then USERNAME="$1"; fi ;;
+		-password | -PASSWORD | -pass | -PASS ) shift; if [ "" != "$1" ]; then PASSWORD="$1"; fi ;;
+		-registry_host | -REGISTRY_HOST ) shift; if [ "" != "$1" ]; then REGISTRY_HOST="$1"; fi ;;
+		-registry_port | -REGISTRY_PORT ) shift; if [ "" != "$1" ]; then PORT="$1"; fi ;;
+		-registry_username | -registry_user | -REGISTRY_USERNAME | -REGISTRY_USER ) shift; if [ "" != "$1" ]; then REGISTRY_USERNAME="$1"; fi ;;
+		-registry_password | -REGISTRY_PASSWORD | -pregistry_pass | -REGISTRY_PASS ) shift; if [ "" != "$1" ]; then REGISTRY_PASSWORD="$1"; fi ;;
+	esac
+shift
+done
+
+export HOST PORT USERNAME PASSWORD
+export REGISTRY_HOST REGISTRY_PORT REGISTRY_USERNAME REGISTRY_PASSWORD
+
+# 2.79b:
+BLENDER_HOME="/home/tvvdev/Apps/Blenders/blender-2.79b-linux-glibc219-x86_64"
+# 2.81  Doesn't work with old graphics cards
+#BLENDER_HOME="/home/tvvdev/Apps/Blenders/blender-2.81-linux-glibc217-x86_64"
+export TVV_Blagent_Registry_HOST TVV_Blagent_Registry_PORT
+FLASK_ENV="development"
+export FLASK_ENV BLENDER_HOME
+TEST_BLEND="${HOME}/BlenderProjects/Testing/Test001.blend"
+TEST_BLEND="${HOME}/BlenderProjects/Testing/eval1.blend"
+DEFAULT_BLEND="blendfiles/default_27.blend"
+BLEND_AGENT="${HOME}/eclipse-workspace/TVVBlenderAgent/blagent.py"
+echo "<BLAGENT_HOST,BLAGENT_PORT>=<$BLAGENT_HOST,$BLAGENT_PORT>"
+#./bin/blender --verbose 1 --enable-autoexec
+#echo "ready? (y/n)"; read ans
+./bin/blender --factory-startup --verbose 1 --python ${BLEND_AGENT} --enable-new-depsgraph
+#./bin/blender -b ${DEFAULT_BLEND} --factory-startup --verbose 1 --python ${BLEND_AGENT} --enable-new-depsgraph
+#./bin/blender -b "$DEFAULT_BLEND" --verbose 1 --enable-autoexec --python ${BLEND_AGENT} --python-console

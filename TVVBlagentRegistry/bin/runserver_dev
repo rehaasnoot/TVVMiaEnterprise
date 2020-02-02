@@ -1,0 +1,18 @@
+#!/bin/bash
+
+SECTION_NAME="TVV_Blagent"
+REGISTRY_SECTION_NAME="TVV_Blagent_Registry"
+. ../TVVConfig/bin/tvvconfig
+
+### Define Parameters ###
+HOST=`secret $SECTION_NAME HOST`
+PORT=`secret $SECTION_NAME PORT`
+USERNAME=`secret $SECTION_NAME USERNAME`
+PASSWORD=`secret $SECTION_NAME PASSWORD`
+REGISTRY_HOST=`secret $REGISTRY_SECTION_NAME HOST`
+REGISTRY_PORT=`secret $REGISTRY_SECTION_NAME PORT`
+REGISTRY_USERNAME=`secret $REGISTRY_SECTION_NAME USERNAME`
+REGISTRY_PASSWORD=`secret $REGISTRY_SECTION_NAME PASSWORD`
+
+export PYTHONPATH=".:/home/tvvdev/eclipse-workspace/TVVConfig"
+python registry.py

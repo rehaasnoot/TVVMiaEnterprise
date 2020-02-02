@@ -1,0 +1,95 @@
+#!/bin/bash
+
+#BLAGENT_LIBS="${BLENDER_HOME}/2.78/scripts/addons_contrib', '/snap/blender-tpaw/3/2.78/scripts/addons', '/snap/blender-tpaw/3/2.78/scripts/startup', '/snap/blender-tpaw/3/2.78/scripts/modules', '/home/tvvdev/eclipse-workspace/TVVBlenderAgent', '/home/tvvdev/eclipse-workspace/TVVBlenderAgent/env/lib/python2.7/site-packages', '/home/tvvdev/GIT/TVVMia/tvvvsbsc/src', '/snap/blender-tpaw/3/2.78/python/lib/python35.zip', '/snap/blender-tpaw/3/2.78/python/lib/python3.5', '/snap/blender-tpaw/3/2.78/python/lib/python3.5/plat-linux', '/snap/blender-tpaw/3/2.78/python/lib/python3.5/lib-dynload', '/snap/blender-tpaw/3/2.78/python/lib/python3.5/site-packages', '/snap/blender-tpaw/3/2.78/scripts/freestyle/modules', '/snap/blender-tpaw/3/2.78/scripts/addons/modules', '/home/tvvdev/.config/blender/2.78/scripts/addons/modules', '/home/tvvdev/GIT/TVVMia/tvvvsbsc/src', '/home/tvvdev/eclipse-workspace/TVVBlenderAgent/env/lib/python2.7/site-packages'"
+TVVMIA_HOME="/home/tvvdev/eclipse-workspace/TVVMia/tvvmia"
+BLAGENT_HOME="."
+BI_HOME="/home/tvvdev/eclipse-workspace/BlenderIntraface"
+BLAGENT_ENV="/home/tvvdev/Development/tvvmia/venv/lib/python3.6/site-packages"
+#MORE_HOMES="$BLENDER_HOME:$BLAGENT_HOME:$BLAGENT_ENV:$TVVMIA_HOME"
+MORE_HOMES="${BLAGENT_HOME}:${BLAGENT_ENV}:${TVVMIA_HOME}:${BI_HOME}"
+#source $BLAGENT_ENV/bin/activate
+if [ "${BLENDER_HOME}" == "" ]; then
+	BLENDER_HOME="./blender"
+fi
+
+#echo "1<PYTHONPATH>=<$PYTHONPATH>"
+if [ "" == "$PYTHONPATH" ]; then
+        PYTHONPATH="$MORE_HOMES"
+else
+        PYTHONPATH="$PYTHONPATH:$MORE_HOMES"
+fi
+export PYTHONPATH
+
+#echo "2<PYTHONPATH>=<$PYTHONPATH>"
+#echo "3<COMMAND>=<$BLENDER_HOME/blender $*>"
+${BLENDER_HOME}/blender $*
+
+#-b or --background 
+#	Run in background (often used for UI-less rendering)
+
+#-a or --render-anim 
+#	Render frames from start to end (inclusive)
+
+#-S or --scene <name>
+#	Set the active scene <name> for rendering
+
+#-f or --render-frame <frame>
+#	Render frame <frame> and save it.
+
+#	* +<frame> start frame relative, -<frame> end frame relative.
+#	* A comma separated list of frames can also be used (no spaces).
+#	* A range of frames can be expressed using '..' seperator between the first and last frames (inclusive).
+
+
+#-s or --frame-start <frame>
+#	Set start to frame <frame>, supports +/- for relative frames too.
+
+#-e or --frame-end <frame>
+#	Set end to frame <frame>, supports +/- for relative frames too.
+
+#-j or --frame-jump <frames>
+#	Set number of frames to step forward after each rendered frame
+
+#-o or --render-output <path>
+#	Set the render path and file name.
+#	Use '//' at the start of the path to render relative to the blend-file.
+#
+#	The '#' characters are replaced by the frame number, and used to define zero padding.
+#
+#	* 'ani_##_test.png' becomes 'ani_01_test.png'
+#	* 'test-######.png' becomes 'test-000001.png'
+#
+#	When the filename does not contain '#', The suffix '####' is added to the filename.
+#
+#	The frame number will be added at the end of the filename, eg:
+#	# blender -b foobar.blend -o //render_ -F PNG -x 1 -a
+#	'//render_' becomes '//render_####', writing frames as '//render_0001.png'
+
+#-E or --engine <engine>
+#	Specify the render engine
+#	use -E help to list available engines
+
+#-t or --threads <threads>
+#	Use amount of <threads> for rendering and other operations
+#	[1-1024], 0 for systems processor count.
+
+#-y or --enable-autoexec 
+#	Enable automatic Python script execution
+
+#-Y or --disable-autoexec 
+#	Disable automatic Python script execution (pydrivers & startup scripts), (compiled as non-standard default)
+
+#-P or --python <filename>
+#	Run the given Python script file
+
+#--python-text <name>
+#	Run the given Python script text block
+
+#--python-expr <expression>
+#	Run the given expression as a Python script
+
+#--python-console 
+#	Run blender with an interactive console
+
+
+# --env-system-python
