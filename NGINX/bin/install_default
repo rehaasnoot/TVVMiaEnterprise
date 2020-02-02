@@ -1,0 +1,3 @@
+#!/bin/bash
+pwd
+sudo bash bin/install.bash install
