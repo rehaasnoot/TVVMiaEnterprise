@@ -7,7 +7,7 @@ verify_ssl = true
 
 [packages]
 aniso8601 = "==7.0.0"
-babel = "==2.7.0"
+babel = "==2.9.1"
 blinker = "==1.4"
 certifi = "==2019.9.11"
 click = "==7.0"
