@@ -9,7 +9,7 @@ verify_ssl = true
 aniso8601 = "==7.0.0"
 babel = "==2.7.0"
 blinker = "==1.4"
-certifi = "==2019.9.11"
+certifi = "==2022.12.7"
 click = "==7.0"
 django = "==2.2.7"
 django-appconf = "==1.0.3"
